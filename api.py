@@ -1,5 +1,7 @@
 import flask
 import json
+import requests
+from secrets import openweatherkey
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
@@ -14,4 +16,6 @@ def return_temperature():
     data = {"query_time":1624654669, "temperature":88.14}
     return json.dumps(data)
 
-app.run()
+if __name__ == "__main__":
+    app.run()
+
