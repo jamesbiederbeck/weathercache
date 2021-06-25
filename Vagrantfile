@@ -13,7 +13,9 @@ Vagrant.configure("2") do |config|
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
   # Using centos/7 for hyperv support 
-  config.vm.box = "centos/7"
+  # using a community box to avoid shell script, per challenge constraints
+  config.vm.box = "pascalhegy/centos-7.2-64-puppet-hyperv"
+  config.vm.box_version = "1.0.1"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
