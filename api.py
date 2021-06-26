@@ -2,6 +2,7 @@ import flask
 import json
 import requests
 from secrets import openweatherkey
+from datetime import datetime
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
@@ -13,7 +14,7 @@ def return_temperature():
         <timestamp>, "temperature": <temperature> }
     """
     temperature = fetch_current_weather()
-    data = {"query_time":1624654669, "temperature":temperature}
+    data = {"query_time":str(datetime.utcnow()) , "temperature":temperature}
     return json.dumps(data)
 
 def fetch_current_weather(city="portland"):
