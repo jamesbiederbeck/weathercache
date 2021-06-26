@@ -1,3 +1,4 @@
 .vagrant
 .vscode
 secrets.py
+__pycache__
