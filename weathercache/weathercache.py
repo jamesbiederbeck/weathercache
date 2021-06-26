@@ -1,10 +1,10 @@
-import flask
+from flask import Flask
 import json
 import requests
 from secrets import openweatherkey
 from datetime import datetime
 
-app = flask.Flask(__name__)
+app = Flask(__name__)
 app.config["DEBUG"] = True
 
 @app.route('/temperature', methods=['GET'])
