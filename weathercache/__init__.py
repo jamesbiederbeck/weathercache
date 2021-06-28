@@ -1,7 +1,7 @@
 from flask import Flask
 import json
 import requests
-from secrets import openweatherkey
+from .secrets import openweatherkey
 from datetime import datetime
 
 app = Flask(__name__)
