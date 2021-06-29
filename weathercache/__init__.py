@@ -19,6 +19,15 @@ def create_app():
         SECRET_KEY='dev',
         DATABASE=('/tmp/temperature_cache.db'),
     )
+    @app.route('/cached', methods=['get'])
+    def alwayservefromcache():
+        """Returns json structure of last fetched temperature like:
+            {"query_time":
+            <timestamp>, "temperature": <temperature> }
+        """
+        cached_query_time, cached_temperature = get_latest_weather_from_db()
+        data = {"query_time":cached_query_time, "temperature":cached_temperature}
+        return json.dumps(data)
 
     @app.route('/temperature', methods=['GET'])
     def return_temperature():
@@ -38,7 +47,7 @@ def create_app():
         else:
             data = {"query_time":cached_query_time, "temperature":cached_temperature}
         return json.dumps(data)
-    
+
     from weathercache import db
     db.init_app(app)
     from weathercache.db import get_db
