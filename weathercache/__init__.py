@@ -26,10 +26,17 @@ def create_app():
             {"query_time":
             <timestamp>, "temperature": <temperature> }
         """
-        temperature = fetch_current_weather()
-        now = str(datetime.utcnow())
-        store_weather_in_db(now, temperature)
-        data = {"query_time":now, "temperature":temperature}
+        cached_query_time, cached_temperature = get_latest_weather_from_db()
+
+        #only get the data if cache is old
+        if find_timestamp_age_in_minutes(cached_query_time)>5:
+            temperature = fetch_current_weather()
+            now = str(datetime.utcnow())
+            store_weather_in_db(now, temperature)
+            data = {"query_time":now, "temperature":temperature}
+        # Serve up the fresh (enough) data from cache
+        else:
+            data = {"query_time":cached_query_time, "temperature":cached_temperature}
         return json.dumps(data)
     
     from weathercache import db
