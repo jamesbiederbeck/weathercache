@@ -13,6 +13,8 @@ Vagrant.configure("2") do |config|
     # You can uncomment this line if you'd like to access the service with port 
     # forwarding over ssh
     # config.ssh.forward_agent = "True"
+
+    # Copy temperature_cache.db to and from machine to avoid locking issue related to samba/NFS shares
     centos.vm.provision "file", source: "./temperature_cache.db", destination: "/tmp/temperature_cache.db"
     centos.vm.provision "puppet"
     centos.trigger.before :destroy do |trigger|
