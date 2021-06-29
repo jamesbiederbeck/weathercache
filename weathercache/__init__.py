@@ -56,7 +56,7 @@ def create_app():
     return app
 
 def fetch_current_weather(city="portland"):
-    """Returns temperature
+    """Returns temperature in <city>
     """
     url = "https://api.openweathermap.org/data/2.5/weather"
     payload = {
