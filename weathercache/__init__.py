@@ -27,7 +27,9 @@ def create_app():
             <timestamp>, "temperature": <temperature> }
         """
         temperature = fetch_current_weather()
-        data = {"query_time":str(datetime.utcnow()) , "temperature":temperature}
+        now = str(datetime.utcnow())
+        store_weather_in_db(now, temperature)
+        data = {"query_time":now, "temperature":temperature}
         return json.dumps(data)
     
     from weathercache import db
