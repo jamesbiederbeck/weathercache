@@ -30,8 +30,26 @@ def create_app():
         data = {"query_time":str(datetime.utcnow()) , "temperature":temperature}
         return json.dumps(data)
     
-    from . import db
+    from weathercache import db
     db.init_app(app)
+    from weathercache.db import get_db
+
+    def store_weather_in_db(query_time, temperature):
+        """Store a recently retrieved temperature observation in the db"""
+        db = get_db()
+        db.execute(
+            "INSERT INTO temperatures(query_time, temperature) VALUES (?,?)",
+            (query_time, temperature)
+        )
+        db.commit()
+
+    def get_latest_weather_from_db():
+        """Gets the most recent entry in the db, returns a 2-tuple with timestamp 
+        and temperature measurement, respectively"""
+        db = get_db()
+        measurement = db.execute("""SELECT query_time, temperature FROM temperatures 
+                                    ORDER BY query_time DESC LIMIT 1""").fetchone()
+        return measurement['query_time'], measurement['temperature']
 
     return app
 
