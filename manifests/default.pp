@@ -10,13 +10,15 @@ $pip_packages = ['flask', 'requests']
 package { $pip_packages: provider => 'pip3'}
 
 exec { 'Start Flask app':
-  command => '/usr/local/bin/flask run --host=0.0.0.0 &',
+  command => '/usr/local/bin/flask run --host=0.0.0.0 --port 80 &',
   cwd => '/vagrant',
   environment => ['PYTHON_PATH=/vagrant', 'FLASK_APP=weathercache'],
-  timeout => 0
+  timeout => 0,
+  user => 'root'
 }
 
 exec { 'Open firewall on port 80':
-  command => '/usr/bin/firewall-cmd --permanent --zone=public --add-port=80/tcp',
-  timeout => 5
+  command => '/usr/bin/firewall-cmd --zone=public --add-port=80/tcp',
+  timeout => 5,
+  user => 'root'
 }
