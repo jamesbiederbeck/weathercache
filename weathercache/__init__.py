@@ -67,3 +67,11 @@ def fetch_current_weather(city="portland"):
     r = requests.get(url, params=payload)
     temperature = r.json()['main']['temp']
     return temperature
+
+def find_timestamp_age_in_minutes(timestampstring):
+    """Calculates the age of timestamp, to be used in comparisons"""
+    # tell the datetime what the time format is
+    timespec = "%Y-%m-%d %H:%M:%S.%f"
+    timestamp = datetime.strptime(timestampstring,timespec)
+    difference = datetime.utcnow() - timestamp 
+    return difference.seconds/60
