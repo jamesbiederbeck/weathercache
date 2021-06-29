@@ -6,6 +6,14 @@
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 Vagrant.configure("2") do |config|
+  config.vm.define "centos" do |centos|
+    centos.vm.box = "pascalhegy/centos-7.2-64-puppet-hyperv"
+    centos.vm.box_version = "1.0.1"
+    centos.trigger.before :destroy do |trigger|
+      trigger.warn = "Copying database to /vagrant/temperature_cache.db"
+      trigger.run_remote = {inline: "cp /tmp/temperature_cache.db /vagrant/temperature_cache.db"}
+    end
+  end
   # The most common configuration options are documented and commented below.
   # For a complete reference, please see the online documentation at
   # https://docs.vagrantup.com.
@@ -14,8 +22,6 @@ Vagrant.configure("2") do |config|
   # boxes at https://vagrantcloud.com/search.
   # Using centos/7 for hyperv support 
   # using a community box to avoid shell script, per challenge constraints
-  config.vm.box = "pascalhegy/centos-7.2-64-puppet-hyperv"
-  config.vm.box_version = "1.0.1"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -26,7 +32,7 @@ Vagrant.configure("2") do |config|
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
   # NOTE: This will enable public access to the opened port
-  # config.vm.network "forwarded_port", guest: 80, host: 8080
+  config.vm.network "forwarded_port", guest: 5000, host: 80
 
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine and only allow access
@@ -70,5 +76,6 @@ Vagrant.configure("2") do |config|
   #   apt-get update
   #   apt-get install -y apache2
   # SHELL
+  config.vm.provision "file", source: "./temperature_cache.db", destination: "/tmp/temperature_cache.db"
   config.vm.provision "puppet"
 end
