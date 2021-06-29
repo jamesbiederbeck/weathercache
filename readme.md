@@ -3,11 +3,7 @@
 Weathercache is a simple flask app that fetches the weather in Portland and can server cached results for up to 5 minutes. The Vagrantfile is currently only written to support Microsoft Hyper-V as the VM host provider. 
 
 To get started, you just need an openweathermap API key. You can get one here:
-<<<<<<< HEAD
 https://openweathermap.org/api. Once you have that, create a file at ```./weathercache/secrets.py``` with a line containg the key, as follows:
-=======
-https://openweathermap.org/api. Once you have that, create secrets.py with a line containg the key, as follows:
->>>>>>> 57acee371f521de699e792587bce5aec9515505f
 
     openweatherkey = "<Put your key here>"
 
