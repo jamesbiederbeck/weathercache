@@ -9,10 +9,15 @@ def create_app():
     app.config["DEBUG"] = True
     
     # normally I would put the sqlite db in an instance folder, but 
-    # I want to include it in the repo this time
+    # I want to include it in the repo this time.
+    # Also, this would be more appropriate in :memory:.
+    # Unfortunately I'm also running into an issue with nfs mounts,
+    # See https://stackoverflow.com/questions/38673701/new-sqlite3-database-is-locked 
+    # so the temperature_cache.db gets copied to /tmp on `vagrant up`, and copied 
+    # back on `vagrant destroy`. This should all be opaque to the application.
     app.config.from_mapping(
         SECRET_KEY='dev',
-        DATABASE=('temperature_cache.sqlite'),
+        DATABASE=('/tmp/temperature_cache.db'),
     )
 
     @app.route('/temperature', methods=['GET'])
